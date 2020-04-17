@@ -27,7 +27,7 @@ def extend = (l1: ListBuffer[Double], l2: ListBuffer[Double]) =>
 	(l1++l2)
     
 
-val file_name="points_k_means_small.txt"
+val file_name="points_k_means.txt"
 val raw_data=sc.textFile(file_name)
 val data=raw_data.map(x => (x.substring(1,x.length()-1).split(","))).map(x => Vector(x(0).toInt,x(1).toInt))
 val regionIds = data.map(x => (List((x(0)-1)/20,(x(1)-1)/20),1))
