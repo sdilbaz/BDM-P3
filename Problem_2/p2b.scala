@@ -39,4 +39,4 @@ val template = counts.join(base)
 val rd_scores=template.map(x=>(list2id(x._1),x._2._1/x._2._2.sum*x._2._2.length)).sortBy(_._2,false)
 
 println("Results:")
-rd_scores.take(16)
+println(rd_scores.take(16).deep.mkString("\n"))
