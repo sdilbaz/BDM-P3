@@ -30,13 +30,6 @@ def id2list(id: Int): List[Int] ={
     return List(java.lang.Math.floorMod(id-1,grid_size),java.lang.Math.floorDiv(id-1,grid_size))
 }
 
-def add_data(line:(Int, Double)): (Int, (Double, Int, List[(Int, Double)])) = {
-    val ns = get_neighbors(id2list(line._1))
-    val aux = ns.map(a => (list2id(a),sorted_scores.lookup(list2id(a))(0)))
-    return (line._1,(line._2,ns.length,aux))
-}
-(bestID,(bestScore,len(ns),tuple(map(lambda x : (tuple2id(x),sorted_scores.lookup(tuple2id(x))[0]),ns))))
-
 val file_name="points_k_means.txt"
 val raw_data=sc.textFile(file_name)
 val data=raw_data.map(x => (x.substring(1,x.length()-1).split(","))).map(x => Vector(x(0).toInt,x(1).toInt))
@@ -49,6 +42,11 @@ val base=enriched.combineByKey(to_list, append, extend)
 val template = counts.join(base)
 val rd_scores=template.map(x=>(list2id(x._1),x._2._1/x._2._2.sum*x._2._2.length)).sortBy(_._2,false)
 val sorted_scores = rd_scores.sortByKey()
+
+def add_data(line:(Int, Double)): (Int, (Double, Int, List[(Int, Double)])) = {
+    val ns = get_neighbors(id2list(line._1))
+    val aux = ns.map(a => (list2id(a),sorted_scores.lookup(list2id(a))(0)))
+    return (line._1,(line._2,ns.length,aux))
 
 val results=rd_scores.take(16).map(add_data)
 println("Results:")
